@@ -78,49 +78,46 @@
 
     <script>
     async function fetchData() {
-        try {
-            // Fetch data dari API
-            const response = await fetch('/api/sensor-data');
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            // Update real-time data
-            document.getElementById('temperature').textContent = data.temperature || 0;
-            document.getElementById('tds').textContent = data.tds || 0;
-            document.getElementById('ph').textContent = data.ph || 0;
-
-            // Update tabel riwayat
-            const tableBody = document.querySelector('tbody');
-            tableBody.innerHTML = ''; // Kosongkan tabel
-
-            if (data.history && data.history.length > 0) {
-                data.history.forEach((entry) => {
-                    const row = `
-                        <tr>
-                            <td>${new Date(entry.timestamp).toLocaleDateString()}</td>
-                            <td>${new Date(entry.timestamp).toLocaleTimeString()}</td>
-                            <td>${entry.temperature} °C</td>
-                            <td>${entry.tds} PPM</td>
-                            <td>${entry.ph}</td>
-                        </tr>`;
-                    tableBody.innerHTML += row;
-                });
-            } else {
-                tableBody.innerHTML = '<tr><td colspan="5">Tidak ada data</td></tr>';
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
+    try {
+        const response = await fetch('/api/sensor-data');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        const data = await response.json();
+
+        // Update real-time data
+        document.getElementById('suhu').textContent = data.temperature || 0;
+        document.getElementById('tds').textContent = data.tds || 0;
+        document.getElementById('ph').textContent = data.ph || 0;
+
+        // Update tabel riwayat
+        const tableBody = document.querySelector('tbody');
+        tableBody.innerHTML = ''; // Kosongkan tabel
+
+        if (data.history && data.history.length > 0) {
+            data.history.forEach((entry) => {
+                const row = `
+                    <tr>
+                        <td>${new Date(entry.timestamp).toLocaleDateString()}</td>
+                        <td>${new Date(entry.timestamp).toLocaleTimeString()}</td>
+                        <td>${entry.temperature} °C</td>
+                        <td>${entry.tds} PPM</td>
+                        <td>${entry.ph}</td>
+                    </tr>`;
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = '<tr><td colspan="5">Tidak ada data</td></tr>';
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
     }
+}
 
-    // Refresh data setiap 5 detik
-    setInterval(fetchData, 5000);
+setInterval(fetchData, 5000); // Refresh setiap 5 detik
+fetchData();
 
-    // Fetch data pertama kali saat halaman dimuat
-    fetchData();
 </script>
 
 @endsection

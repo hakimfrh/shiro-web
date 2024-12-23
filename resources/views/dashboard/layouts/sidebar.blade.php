@@ -18,7 +18,7 @@
     </style>
     <nav class="navbar bg-light navbar-light">
         <a href="\dashboard" class="navbar-brand mx-4 mb-3">
-            <h3 style="color: #384B70;"><i class="fa fa-hashtag me-2"></i>Shiroo</h3>
+            <h3 style="color: #384B70;"></i>SHIRO</h3>
         </a>
         <div class="d-flex align-items-center ms-4 mb-4">
             <div class="position-relative">
