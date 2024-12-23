@@ -15,13 +15,42 @@
                 </div>
                 <button type="submit" class="btn w-100" style="background-color: #B8001F; color: #fff;">Deteksi</button>
             </form>
+
             <h2 class="mt-4">Hasil Prediksi:</h2>
-            <div id="result" class="mt-3"></div>
+
+            <!-- Grid container -->
+            <div class="d-flex align-items-start mt-3" id="result-container">
+                <!-- Gambar -->
+                <div class="me-4">
+                    <!-- <h5>Gambar yang Diupload:</h5> -->
+                    <img id="uploadedImage" src="" alt="Uploaded Image" class="img-fluid rounded" style="max-height: 300px; display: none;" />
+                </div>
+
+                <!-- Hasil Prediksi -->
+                <div id="result" style="flex: 1;">
+                    <p>Hasil akan muncul di sini setelah prediksi selesai.</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
+    // Event untuk menampilkan preview gambar
+    document.getElementById('file').addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imgElement = document.getElementById('uploadedImage');
+                imgElement.src = e.target.result;
+                imgElement.style.display = 'block'; // Tampilkan gambar setelah file diunggah
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Event untuk memproses prediksi
     document.getElementById('predictForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -49,7 +78,7 @@
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken,  // Kirimkan token CSRF di header
+                    'X-CSRF-TOKEN': csrfToken,
                 },
             });
 
